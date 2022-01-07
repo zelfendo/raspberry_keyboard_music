@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 #coding:utf-8
 
-from select import select
+import logging
 import os
+
 HOME_PATH = '/home/pi/Work/raspberry_keyboard_music'
 MUSIC_PATH = '/home/pi/music'
 DEVICE_NAME = '/dev/input/event1'
-def log(s):
-  print s
+
+LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
+logging.basicConfig(filename='%s/logs/main.log' % HOME_PATH , level=logging.DEBUG, format=LOG_FORMAT)
+
 
 def get_music_list():
   ''' 获得目标路径的音乐'''
@@ -22,13 +25,14 @@ def get_music_list():
 def play_music(music_list, number):
   index = number % len(music_list)
   fname = music_list[index]
-  log(fname)
-  os.system("bash -x %s/bin/player.sh %s >> tool/start.log 2>&1" % (HOME_PATH, fname))
+  logging.info("播放序号[%02d]%s" % (index, fname))
+  os.system("bash -x %s/bin/player.sh %s %s/logs/player.log >> %s/logs/start.log 2>&1" % (HOME_PATH, fname, HOME_PATH, HOME_PATH))
 def stop_music():
-  os.system("bash -x %s/bin/stop.sh >> tool/start.log 2>&1" % HOME_PATH)
+  os.system("bash -x %s/bin/stop.sh >> %s/logs/start.log 2>&1" % (HOME_PATH, HOME_PATH))
 
 def loop_play_music(music_list):
   from evdev import InputDevice
+  from select import select
   dev = InputDevice(DEVICE_NAME)
   while True:
     select([dev], [], [])
@@ -38,7 +42,6 @@ def loop_play_music(music_list):
       if event.code == 1 or "%s" % event.code == "01":
         stop_music()
       else:
-        log(type(event.code))
         play_music(music_list, event.code-1)
 
 
