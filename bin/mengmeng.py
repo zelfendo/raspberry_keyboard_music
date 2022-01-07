@@ -3,7 +3,7 @@
 
 from select import select
 import os
-HOME_PATH = '/home/pi/Work/raspberry_keyboard_music"
+HOME_PATH = '/home/pi/Work/raspberry_keyboard_music'
 MUSIC_PATH = '/home/pi/music'
 DEVICE_NAME = '/dev/input/event1'
 def log(s):
