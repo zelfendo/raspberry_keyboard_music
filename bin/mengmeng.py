@@ -6,7 +6,9 @@ import os
 
 HOME_PATH = '/home/pi/Work/raspberry_keyboard_music'
 MUSIC_PATH = '/home/music'
-DEVICE_NAME = '/dev/input/event5'
+DEVICE_NAME = '/dev/input/event0'
+#OFFSET = 1
+OFFSET = 2 # for my keyboard 's first key is broken
 
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
 logging.basicConfig(filename='%s/logs/main.log' % HOME_PATH , level=logging.DEBUG, format=LOG_FORMAT)
@@ -45,7 +47,7 @@ def loop_play_music(music_list):
       if event.code == 1 or "%s" % event.code == "01":
         stop_music()
       else:
-        play_music(music_list, event.code-1)
+        play_music(music_list, event.code-OFFSET)
 
 
 if __name__ == '__main__':
