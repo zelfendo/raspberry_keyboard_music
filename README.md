@@ -18,7 +18,7 @@ rm always_run.sh
 ```
 crontab -e 
 # 添加
-0/2 * * * * /home/pi/Work/raspberry_keyboard_music/bin/always_run.sh
+*/2 * * * * /home/pi/Work/raspberry_keyboard_music/bin/always_run.sh
 ```
 # 一些可能碰到的问题
 ## 1. 安装树莓派samba的时候，iphone不能写入
