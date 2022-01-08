@@ -44,7 +44,7 @@ def loop_play_music(music_list):
     for event in dev.read():
       if event.type != 1 : continue # ONLY KEYBOARD
       if event.value != 1 : continue # ONLY PRESS
-      if event.code == 1 or "%s" % event.code == "01":
+      if event.code <= OFFSET or "%s" % event.code <= ("0%" % OFFSET):
         stop_music()
       else:
         play_music(music_list, event.code-OFFSET)
