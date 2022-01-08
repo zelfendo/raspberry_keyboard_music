@@ -5,8 +5,8 @@ import logging
 import os
 
 HOME_PATH = '/home/pi/Work/raspberry_keyboard_music'
-MUSIC_PATH = '/home/pi/music'
-DEVICE_NAME = '/dev/input/event1'
+MUSIC_PATH = '/home/music'
+DEVICE_NAME = '/dev/input/event5'
 
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
 logging.basicConfig(filename='%s/logs/main.log' % HOME_PATH , level=logging.DEBUG, format=LOG_FORMAT)
@@ -28,7 +28,7 @@ def play_music(music_list, number):
   logging.info("播放序号[%02d]%s" % (index, fname))
   os.system("bash -x %s/bin/player.sh %s %s/logs/player.log >> %s/logs/start.log 2>&1" % (HOME_PATH, fname, HOME_PATH, HOME_PATH))
 def stop_music():
-  os.system("bash -x %s/bin/stop.sh >> %s/logs/start.log 2>&1" % (HOME_PATH, HOME_PATH))
+  os.system("bash -x %s/bin/stop.sh >> %s/logs/stop.log 2>&1" % (HOME_PATH, HOME_PATH))
 
 def loop_play_music(music_list):
   from evdev import InputDevice

@@ -1,1 +1,1 @@
-killall omxplayer.bin
+killall mplayer
