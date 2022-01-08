@@ -26,7 +26,10 @@ def play_music(music_list, number):
   index = number % len(music_list)
   fname = music_list[index]
   logging.info("播放序号[%02d]%s" % (index, fname))
-  os.system("bash -x %s/bin/player.sh %s %s/logs/player.log >> %s/logs/start.log 2>&1" % (HOME_PATH, fname, HOME_PATH, HOME_PATH))
+  if fname.endswith("mp3"):
+    os.system("bash -x %s/bin/player.sh %s %s/logs/player.log 15 >> %s/logs/start.log 2>&1" % (HOME_PATH, fname, HOME_PATH, HOME_PATH))
+  else:
+    os.system("bash -x %s/bin/player.sh %s %s/logs/player.log 00 >> %s/logs/start.log 2>&1" % (HOME_PATH, fname, HOME_PATH, HOME_PATH))
 def stop_music():
   os.system("bash -x %s/bin/stop.sh >> %s/logs/stop.log 2>&1" % (HOME_PATH, HOME_PATH))
 
