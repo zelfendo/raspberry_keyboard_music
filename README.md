@@ -33,3 +33,6 @@ crontab -e
 3. vfs objects = acl_xattr catia fruit streams_xattr
 ```
 
+## 2. mplayer报错
+ vim ~/.mplayer/config
+ao=alsa
