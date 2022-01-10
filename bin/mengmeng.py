@@ -13,6 +13,17 @@ OFFSET = 2 # for my keyboard 's first key is broken
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
 logging.basicConfig(filename='%s/logs/main.log' % HOME_PATH , level=logging.DEBUG, format=LOG_FORMAT)
 
+# 蓝牙键盘不标准，不是按照0-xx排列的顺序，导致不确定那个按键是哪首歌,重新映射
+keyboard_map = {}
+def load_keyboard_map():
+  try:
+    f = open(HOME_PATH + "/bin/keyboard_map")
+    for i in f:
+      if i.strip() != "":
+        index = len(keyboard_map) + 1
+        keyboard_map[int(i)] = index
+  except Exception as e:
+    logging.info("加载keyboard_map失败:%s" % e)
 
 def get_music_list():
   ''' 获得目标路径的音乐'''
@@ -22,6 +33,7 @@ def get_music_list():
     path = os.path.join(MUSIC_PATH, file_name)
     if os.path.isfile(path):
        ret_list.append(path)
+  ret_list.sort()
   return ret_list
 
 def play_music(music_list, number):
@@ -44,12 +56,16 @@ def loop_play_music(music_list):
     for event in dev.read():
       if event.type != 1 : continue # ONLY KEYBOARD
       if event.value != 1 : continue # ONLY PRESS
-      if event.code <= OFFSET or "%s" % event.code <= ("0%" % OFFSET):
+      code = keyboard_map.get(event.code, event.code)
+      logging.info("键盘事件Type:[%02d]value[%s]code[%s]new_code[%s]" % (event.type, event.value, event.code, code))
+      #if event.code <= OFFSET or ("%d" % event.code) <= ("%d" % OFFSET):
+      if code <= OFFSET:
         stop_music()
       else:
-        play_music(music_list, event.code-OFFSET)
+        play_music(music_list, code-OFFSET)
 
 
 if __name__ == '__main__':
+   load_keyboard_map()
    music_list = get_music_list()
    loop_play_music(music_list)
