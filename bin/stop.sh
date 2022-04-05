@@ -1,1 +1,1 @@
-killall mplayer
+killall play

@@ -38,20 +38,21 @@ def get_music_list():
 
 def play_music(music_list, number):
   index = number % len(music_list)
-  fname = music_list[index]
+  fname = "'%s'" % music_list[index]
   logging.info("播放序号[%02d]%s" % (index, fname))
-  if fname.endswith("mp3"):
+  if "mp3" in fname:
     os.system("bash -x %s/bin/player.sh %s %s/logs/player.log 15 >> %s/logs/start.log 2>&1" % (HOME_PATH, fname, HOME_PATH, HOME_PATH))
   else:
     os.system("bash -x %s/bin/player.sh %s %s/logs/player.log 00 >> %s/logs/start.log 2>&1" % (HOME_PATH, fname, HOME_PATH, HOME_PATH))
 def stop_music():
   os.system("bash -x %s/bin/stop.sh >> %s/logs/stop.log 2>&1" % (HOME_PATH, HOME_PATH))
 
-def loop_play_music(music_list):
+def loop_play_music():
   from evdev import InputDevice
   from select import select
   dev = InputDevice(DEVICE_NAME)
   while True:
+    music_list = get_music_list()
     select([dev], [], [])
     for event in dev.read():
       if event.type != 1 : continue # ONLY KEYBOARD
@@ -67,5 +68,4 @@ def loop_play_music(music_list):
 
 if __name__ == '__main__':
    load_keyboard_map()
-   music_list = get_music_list()
-   loop_play_music(music_list)
+   loop_play_music()
