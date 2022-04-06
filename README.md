@@ -18,8 +18,10 @@ rm always_run.sh
 ```
 crontab -e 
 # 添加
+XDG_RUNTIME_DIR=/run/user/user_id
 */2 * * * * /home/pi/Work/raspberry_keyboard_music/bin/always_run.sh
 ```
+注意第一行的user_id需要改成自己的id，可以通过命令 id来查询,否则会碰到蓝牙播放无声音的问题
 # 一些可能碰到的问题
 ## 1. 安装树莓派samba的时候，iphone不能写入
 报错：
