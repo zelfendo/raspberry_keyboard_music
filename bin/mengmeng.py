@@ -7,9 +7,9 @@ import os
 HOME_PATH = '/home/pi/Work/raspberry_keyboard_music'
 MUSIC_PATH = '/home/music'
 DEVICE_NAME = '/dev/input/event0'
-#OFFSET = 1
+OFFSET = 1
 OFFSET = 2 # for my keyboard 's first key is broken
-
+USE_KEY_MAP = True
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
 logging.basicConfig(filename='%s/logs/main.log' % HOME_PATH , level=logging.DEBUG, format=LOG_FORMAT)
 
@@ -67,5 +67,6 @@ def loop_play_music():
 
 
 if __name__ == '__main__':
-   load_keyboard_map()
+   if USE_KEY_MAP:
+     load_keyboard_map()
    loop_play_music()
